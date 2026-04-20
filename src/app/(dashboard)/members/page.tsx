@@ -31,8 +31,8 @@ export default function MembersPage() {
     const [showCreateDialog, setShowCreateDialog] = useState(false);
     const [hideInactives, setHideInactives] = useState(true);
     return (
-        <div className="flex flex-col h-screen">
-            <div className='flex justify-between w-full'>
+        <div className="flex flex-col h-dvh">
+            <div className='flex justify-between w-full pt-4'>
                 <h1>Membros</h1>
                 <div className='flex gap-4 items-center'>
                     <div className='flex gap-1 items-center'>
@@ -47,7 +47,7 @@ export default function MembersPage() {
                 <p>Loading...</p>
             ) : (
                 membros?.length !== 0 ?
-                    <Table>
+                    <Table className='mt-4'>
                         <TableHeader>
                             <TableRow>
                                 <TableHead>Nome</TableHead>

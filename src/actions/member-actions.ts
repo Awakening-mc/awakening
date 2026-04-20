@@ -14,9 +14,10 @@ export async function server_createMember(data: {name: string, class: IClass, le
     return member;
 }
 export async function server_getMembers() {
- 
     return db.select().from(members).orderBy(desc(members.active), asc(members.name));;
-    
+}
+export async function server_getActiveMembers() {
+    return db.select().from(members).where(eq(members.active, true)).orderBy(asc(members.name));
 }
 export async function server_getMemberById(id: string) {
     return db.select().from(members).where(eq(members.id, id)).limit(1);
