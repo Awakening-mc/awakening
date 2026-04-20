@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 import { server_validateToken } from './actions/auth-actions'
 const protectedRoutes = ['/dashboard', '/members', '/events'];
 
-export function proxy(request: NextRequest) {
+export async function proxy(request: NextRequest) {
     const token = request.cookies.get("awakening-app-token")?.value;
     const url = request.nextUrl.clone();
     if (protectedRoutes.some(route => url.pathname.startsWith(route))) {
@@ -11,7 +11,7 @@ export function proxy(request: NextRequest) {
             url.pathname = '/login';
             return NextResponse.redirect(url);
         }
-        const isValid = server_validateToken(token);
+        const isValid = await server_validateToken(token);
         if (!isValid) {
             url.pathname = '/login';
             return NextResponse.redirect(url);
