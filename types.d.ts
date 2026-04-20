@@ -1,0 +1,1 @@
+export type IClass = "DK" | "Necro" | "Lock" | "Charmer" | "Ceifa" | "BRB" | "Xamã" | "Rogue" | "CCQ" | "Hunter";
