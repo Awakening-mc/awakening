@@ -16,7 +16,7 @@ export async function server_login({name, password}: {name: string, password: st
         throw new Error("Invalid password");
     }
 
-    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, { expiresIn: '30d' });
+    const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET!, { expiresIn: (60*60*24*30) });
     (await cookies()).set('awakening-app-token', token, { httpOnly: true, path: '/' });
     return token;
 

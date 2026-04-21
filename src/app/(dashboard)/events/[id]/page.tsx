@@ -4,7 +4,7 @@ import { Table, TableBody, TableHead, TableRow, TableCell, TableHeader } from '@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { server_getEventById } from "@/actions/event-actions";
 import { server_getActiveMembers } from "@/actions/member-actions";
-import { server_createAttendanceForNotAttended, server_getAttendancesForEvent, server_updateAttendance } from "@/actions/attendance-actions";
+import { server_getAttendancesForEvent, server_updateAttendance } from "@/actions/attendance-actions";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 export default function Page() {
@@ -29,15 +29,7 @@ export default function Page() {
             return await server_getAttendancesForEvent(id as string);
         }
     })
-    const addNewMembers = useMutation({
-        mutationFn: async () => {
-            await server_createAttendanceForNotAttended(id as string);
-        },
-        onSuccess: () => {
-            toast.success("Membros adicionados com sucesso!")
-            queryClient.invalidateQueries({ queryKey: ["attendances", id] })
-        }
-    })
+
     const updateAttendance = useMutation({
         mutationFn: async (data: {memberId: string, present: boolean, justified: boolean}) => {
             await server_updateAttendance(data.memberId, id as string, data.present, data.justified)
@@ -50,7 +42,6 @@ export default function Page() {
         <div className="flex flex-col h-dvh">
             <div className="flex justify-between pt-4">
                 <h1 className="text-2xl font-bold mb-4">Detalhes do Evento</h1>
-                <Button variant="outline" onClick={() => addNewMembers.mutate()}>Adicionar Novos Membros</Button>
             </div>
             <p className="font-bold text-xl">{event?.name} - {event?.date.toLocaleDateString()}</p>
                 {members?.length !== 0 ?

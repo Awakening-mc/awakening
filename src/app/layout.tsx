@@ -20,6 +20,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Awakening",
   description: "App de registro da guilda Awakening",
+  icons: {
+    icon: "/awk-ico.ico",
+  }
 };
 
 export default function RootLayout({

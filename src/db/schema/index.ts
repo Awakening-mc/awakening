@@ -11,7 +11,7 @@ export const users = pgTable("users", {
 
 export const members = pgTable("members", {
     id: uuid("id").defaultRandom().primaryKey(),
-    name: text("name").notNull(),
+    name: text("name").unique().notNull(),
     class: classEnum("class").notNull(),
     level: smallint("level").notNull(),
     active: boolean("active").default(true).notNull(),
@@ -25,8 +25,8 @@ export const events = pgTable("events", {
 
 export const event_attendance = pgTable("event_attendance", {
     id: uuid("id").defaultRandom().primaryKey(),
-    eventId: uuid("event_id").references(() => events.id).notNull(),
-    memberId: uuid("member_id").references(() => members.id).notNull(),
+    eventId: uuid("event_id").references(() => events.id, {onDelete: "cascade"}).notNull(),
+    memberId: uuid("member_id").references(() => members.id, {onDelete: "cascade"}).notNull(),
     attended: boolean("attended").notNull(),
     justified: boolean("justified"),
 })
