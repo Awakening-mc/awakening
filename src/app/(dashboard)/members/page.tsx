@@ -6,6 +6,8 @@ import { Table, TableBody, TableHead, TableRow, TableCell, TableHeader } from '@
 import CreateMemberDialog from './create-member-dialog';
 import UpdateMemberDialog from './update-member-dialog';
 import { toast } from 'sonner';
+import useDebounce from '@/hooks/useDebounce';
+import SearchBar from '@/components/search-bar';
 export default function MembersPage() {
     const queryClient = useQueryClient()
     const { data: membros, isLoading } = useQuery({
@@ -28,12 +30,17 @@ export default function MembersPage() {
             toast.error("Erro ao atualizar membro.")
         }
     })
+    const [searchQuery, setSearchQuery] = useState("");
+    const debouncedSearchQuery = useDebounce(searchQuery, 300);
+    const filteredMembers = membros?.filter(m => m.name.toLowerCase().includes(debouncedSearchQuery.toLowerCase()));
+
     const [showCreateDialog, setShowCreateDialog] = useState(false);
     const [hideInactives, setHideInactives] = useState(true);
     return (
-        <div className="flex flex-col h-dvh">
-            <div className='flex justify-between w-full pt-4'>
+        <div className="flex flex-col">
+            <div className='flex justify-between w-full pt-4 gap-8'>
                 <h1>Membros</h1>
+                <SearchBar value={searchQuery} onSearch={setSearchQuery}/>
                 <div className='flex gap-4 items-center'>
                     <div className='flex gap-1 items-center'>
                         <label htmlFor="hideInactives" className='mr-4'>{!hideInactives ? "Esconder inativos" : "Mostrar inativos"}</label>
@@ -46,9 +53,9 @@ export default function MembersPage() {
             {isLoading ? (
                 <p>Loading...</p>
             ) : (
-                membros?.length !== 0 ?
-                    <Table className='mt-4'>
-                        <TableHeader>
+                filteredMembers?.length !== 0 ?
+                    <Table className='mt-4 relative h-fit'>
+                        <TableHeader className='sticky top-0 bg-white z-10'>
                             <TableRow>
                                 <TableHead>Nome</TableHead>
                                 <TableHead>Classe</TableHead>
@@ -57,24 +64,25 @@ export default function MembersPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {membros?.map((membro) => {
-                                if(hideInactives && !membro.active) return null;
+                            {filteredMembers?.map((membro) => {
+                                if (hideInactives && !membro.active) return null;
                                 return (
-                                <TableRow key={membro.id}>
-                                    <TableCell>{membro.name}</TableCell>
-                                    <TableCell>{membro.class}</TableCell>
-                                    <TableCell>{membro.level}</TableCell>
-                                    <TableCell className='flex gap-2 items-center'>
-                                        <input className='h-6 w-6' type="checkbox" checked={membro.active} onChange={() => {
-                                            checkMember.mutate(membro.id)
-                                        }} />
-                                        {membro &&
-                                            <UpdateMemberDialog member={membro} />
-                                        }
-                                    </TableCell>
+                                    <TableRow key={membro.id}>
+                                        <TableCell>{membro.name}</TableCell>
+                                        <TableCell>{membro.class}</TableCell>
+                                        <TableCell>{membro.level}</TableCell>
+                                        <TableCell className='flex gap-2 items-center'>
+                                            <input className='h-6 w-6' type="checkbox" checked={membro.active} onChange={() => {
+                                                checkMember.mutate(membro.id)
+                                            }} />
+                                            {membro &&
+                                                <UpdateMemberDialog member={membro} />
+                                            }
+                                        </TableCell>
 
-                                </TableRow>
-                            )})}
+                                    </TableRow>
+                                )
+                            })}
                         </TableBody>
                     </Table>
                     :

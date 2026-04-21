@@ -5,8 +5,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { server_getEventById } from "@/actions/event-actions";
 import { server_getActiveMembers } from "@/actions/member-actions";
 import { server_getAttendancesForEvent, server_updateAttendance } from "@/actions/attendance-actions";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
+import useDebounce from "@/hooks/useDebounce";
+import { useState } from "react";
+import SearchBar from "@/components/search-bar";
 export default function Page() {
     const queryClient = useQueryClient();
     const { id } = useParams();
@@ -29,6 +30,9 @@ export default function Page() {
             return await server_getAttendancesForEvent(id as string);
         }
     })
+    const [searchQuery, setSearchQuery] = useState("");
+    const debouncedSearchQuery = useDebounce(searchQuery, 300);
+     const filteredMembers = members?.filter(m => m.name.toLowerCase().includes(debouncedSearchQuery.toLowerCase()));
 
     const updateAttendance = useMutation({
         mutationFn: async (data: {memberId: string, present: boolean, justified: boolean}) => {
@@ -43,8 +47,11 @@ export default function Page() {
             <div className="flex justify-between pt-4">
                 <h1 className="text-2xl font-bold mb-4">Detalhes do Evento</h1>
             </div>
-            <p className="font-bold text-xl">{event?.name} - {event?.date.toLocaleDateString()}</p>
-                {members?.length !== 0 ?
+            <div className="flex w-full gap-8 justify-between">
+                <p className="font-bold text-lg w-1/2">{event?.name} - {event?.date.toLocaleDateString()}</p>
+                <SearchBar value={searchQuery} onSearch={setSearchQuery}/>
+            </div>
+                {filteredMembers?.length !== 0 ?
                     <Table className="mt-4 relative">
                         <TableHeader className="sticky top-0 bg-white z-10">
                             <TableRow>
@@ -54,7 +61,7 @@ export default function Page() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {members?.map((membro) => {
+                            {filteredMembers?.map((membro) => {
                                 const at = attendances?.find(a => a.memberId === membro.id);
                                 return (
                                 <TableRow key={membro.id}>

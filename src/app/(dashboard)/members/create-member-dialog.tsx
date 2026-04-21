@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { IClass } from "../../../../types";
 import { server_createMember } from "@/actions/member-actions";
 import z from "zod";
+import { useState } from "react";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export default function CreateMemberDialog({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
@@ -23,8 +24,10 @@ export default function CreateMemberDialog({ open, setOpen }: { open: boolean, s
             level: 34
         }
     })
+    const [isCreating, setIsCreating] = useState(false)
     const createMember = useMutation({
         mutationFn: async (data: z.infer<typeof createMemberSchema>) => {
+            setIsCreating(true)
             await server_createMember(data)
         },
         onSuccess: () => {
@@ -35,6 +38,9 @@ export default function CreateMemberDialog({ open, setOpen }: { open: boolean, s
         },
         onError: (erro: any) => {
             toast.error("Erro ao criar membro.")
+        },
+        onSettled: () => {
+            setIsCreating(false)
         }
     })
     return (
@@ -98,8 +104,10 @@ export default function CreateMemberDialog({ open, setOpen }: { open: boolean, s
                             />
                         </div>
                     </Form>
-                    <DialogFooter>
-                        <Button type="submit">Salvar</Button>
+                    <DialogFooter className="mt-4">
+                        <Button type="submit" disabled={isCreating}>
+                            {isCreating ? "Salvando..." : "Salvar"}
+                        </Button>
 
                         <Button variant="outline" onClick={() => setOpen(false)}>
                             Cancelar

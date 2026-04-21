@@ -3,11 +3,11 @@
 import Link from "next/link"
 import { useState } from "react"
 import { cn } from '@/lib/utils'
-import { MoveLeft } from "lucide-react"
+import { ArrowLeft, MoveLeft } from "lucide-react"
 export default function Sidebar() {
     const [expanded, setExpanded] = useState(true)
     return (
-        <aside className={cn("relative bg-gray-800 text-white p-4 h-screen", expanded ? "w-64" : "w-10")}>
+        <aside className={cn("bg-gray-800 text-white p-4 h-dvh sticky left-0 top-0 transition-[500ms]", expanded ? "w-64" : "w-10")}>
             {expanded &&
                 <>
                     <h2 className="text-2xl font-bold mb-4">Awakening</h2>
@@ -26,7 +26,7 @@ export default function Sidebar() {
                     </nav>
                 </>
             }
-            <MoveLeft className={cn("absolute bottom-4 right-2 cursor-pointer transition-transform", !expanded ? "rotate-180" : "")} onClick={() => setExpanded(!expanded)} />
+            <ArrowLeft className={cn("absolute bottom-4 right-2 cursor-pointer transition-transform", !expanded ? "rotate-180" : "")} onClick={() => setExpanded(!expanded)} />
         </aside>
     )
 }

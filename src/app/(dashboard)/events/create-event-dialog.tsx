@@ -7,9 +7,11 @@ import { createEventSchema } from "@/forms/events";
 import { useForm } from "react-hook-form"
 import { FormControl, FormItem, FormField, FormLabel, Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import z from "zod";
+import z, { set } from "zod";
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { server_createEvent } from "@/actions/event-actions";
+import { useState } from "react";
+
 
 export default function CreateEventDialog({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
     const queryClient = useQueryClient()
@@ -20,8 +22,10 @@ export default function CreateEventDialog({ open, setOpen }: { open: boolean, se
             date: new Date().toISOString().slice(0, 16)
         }
     })
+    const [isCreating, setIsCreating] = useState(false)
     const createEvent = useMutation({
         mutationFn: async (data: z.infer<typeof createEventSchema>) => {
+            setIsCreating(true)
             await server_createEvent(data)
         },
         onSuccess: () => {
@@ -32,6 +36,9 @@ export default function CreateEventDialog({ open, setOpen }: { open: boolean, se
         },
         onError: (erro: any) => {
             toast.error("Erro ao criar evento.")
+        },
+        onSettled: () => {
+            setIsCreating(false)
         }
     })
     return (
@@ -75,7 +82,9 @@ export default function CreateEventDialog({ open, setOpen }: { open: boolean, se
                         </div>
                     </Form>
                     <DialogFooter>
-                        <Button type="submit">Salvar</Button>
+                        <Button type="submit" disabled={isCreating}>
+                            {isCreating ? "Salvando..." : "Salvar"}
+                        </Button>
 
                         <Button variant="outline" onClick={() => setOpen(false)}>
                             Cancelar
