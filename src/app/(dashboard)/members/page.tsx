@@ -44,10 +44,10 @@ export default function MembersPage() {
             <div className='flex justify-between w-full pt-4 gap-8'>
                 <h1>Membros</h1>
                 <SearchBar value={searchQuery} onSearch={setSearchQuery} />
-                <div className='flex gap-4 items-center'>
-                    <div className='flex gap-1 items-center'>
-                        <label htmlFor="hideInactives" className='mr-4'>{!hideInactives ? "Esconder inativos" : "Mostrar inativos"}</label>
-                        <input type="checkbox" id="hideInactives" name="hideInactives" checked={hideInactives} onChange={() => setHideInactives(!hideInactives)} />
+                <div className='flex gap-4 items-center grow'>
+                    <div className='flex items-center'>
+                        <label htmlFor="hideInactives" className='mr-1 text-sm'>{!hideInactives ? "Esconder inativos" : "Mostrar inativos"}</label>
+                        <input type="checkbox" id="hideInactives" name="hideInactives" className='h-8 w-8' checked={hideInactives} onChange={() => setHideInactives(!hideInactives)} />
                     </div>
                     <CreateMemberDialog open={showCreateDialog} setOpen={setShowCreateDialog} />
                 </div>

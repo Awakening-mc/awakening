@@ -26,8 +26,12 @@ const {data: memberAttendances} = useQuery({
                 <p>Carregando membro...</p>
             ) : (
                 <>
+                <div className='mt-2 w-[90%] mx-auto flex flex-col gap-2'>
+
                     <h1>{member.name} - {member.class}</h1>
                     <p>Nível: {member.level}</p>
+                    <p>Telefone: {member.phone || "Não informado"}</p>
+                </div>
                     <div className='mt-2 w-[90%] mx-auto rounded-xl border p-4'>
                         <h2 className='text-lg font-semibold mb-4'>Presenças</h2>
                         {memberAttendances?.length === 0 ? (

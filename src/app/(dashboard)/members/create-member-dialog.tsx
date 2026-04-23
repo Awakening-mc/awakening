@@ -44,9 +44,13 @@ export default function CreateMemberDialog({ open, setOpen }: { open: boolean, s
             setIsCreating(false)
         }
     })
+    function cancelar(){
+        form.reset()
+        setOpen(false)
+    }
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <Button variant={"outline"} onClick={() => setOpen(true)}>
+            <Button variant={"outline"} className={"text-background bg-foreground px-6 text-lg"} onClick={() => setOpen(true)}>
                 Criar Membro
             </Button>
             <DialogContent>
@@ -65,7 +69,7 @@ export default function CreateMemberDialog({ open, setOpen }: { open: boolean, s
                                     <FormItem>
                                         <FormLabel>Nome</FormLabel>
                                         <FormControl>
-                                            <Input {...field} />
+                                            <Input maxLength={10} {...field} onChange={(e) => field.onChange(e.target.value.replace(/\s/g, ''))} />
                                         </FormControl>
                                     </FormItem>
                                 )}
@@ -93,7 +97,9 @@ export default function CreateMemberDialog({ open, setOpen }: { open: boolean, s
                                         <FormLabel>Telefone</FormLabel>
                                         <FormControl>
                                             <Input
+                                                maxLength={15}
                                                 {...field}
+                                                onChange={(e) => field.onChange(e.target.value.replace(/\s/g, ''))}
                                             />
                                         </FormControl>
                                     </FormItem>
@@ -124,7 +130,7 @@ export default function CreateMemberDialog({ open, setOpen }: { open: boolean, s
                             {isCreating ? "Salvando..." : "Salvar"}
                         </Button>
 
-                        <Button variant="outline" onClick={() => setOpen(false)}>
+                        <Button variant="outline" onClick={cancelar}>
                             Cancelar
                         </Button>
 

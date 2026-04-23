@@ -45,7 +45,10 @@ export default function UpdateMemberDialog({ member }: { member: Member }) {
         }
     })
     const [open, setOpen] = useState(false)
-
+    function cancelar(){
+        form.reset()
+        setOpen(false)
+    }
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <Button variant={"outline"} size={"icon"} className={"rounded-full cursor-pointer"} onClick={() => setOpen(true)}>
@@ -67,7 +70,7 @@ export default function UpdateMemberDialog({ member }: { member: Member }) {
                                     <FormItem>
                                         <FormLabel>Nome</FormLabel>
                                         <FormControl>
-                                            <Input {...field} />
+                                            <Input maxLength={10} {...field} onChange={(e) => field.onChange(e.target.value.replace(/\s/g, ''))}/>
                                         </FormControl>
                                     </FormItem>
                                 )}
@@ -96,7 +99,9 @@ export default function UpdateMemberDialog({ member }: { member: Member }) {
                                         <FormLabel>Telefone</FormLabel>
                                         <FormControl>
                                             <Input
+                                                maxLength={15}
                                                 {...field}
+                                                onChange={(e) => field.onChange(e.target.value.replace(/\s/g, ''))}
                                             />
                                         </FormControl>
                                     </FormItem>
@@ -125,7 +130,7 @@ export default function UpdateMemberDialog({ member }: { member: Member }) {
                     <DialogFooter>
                         <Button type="submit">Salvar</Button>
 
-                        <Button variant="outline" onClick={() => setOpen(false)}>
+                        <Button variant="outline" onClick={cancelar}>
                             Cancelar
                         </Button>
 

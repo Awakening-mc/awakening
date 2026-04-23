@@ -4,8 +4,11 @@ import Link from "next/link"
 import { useState } from "react"
 import { cn } from '@/lib/utils'
 import { ArrowLeft, MoveLeft } from "lucide-react"
+import { usePathname } from "next/navigation"
 export default function Sidebar() {
     const [expanded, setExpanded] = useState(true)
+    const pathname = usePathname()
+
     return (
         <aside className={cn("bg-gray-800 text-white p-4 h-dvh sticky left-0 top-0 transition-[500ms]", expanded ? "w-64" : "w-10")}>
             {expanded &&
@@ -14,13 +17,13 @@ export default function Sidebar() {
                     <nav>
                         <ul>
                             <li className="mb-2">
-                                <Link href="/dashboard" className="block py-2 px-4 rounded hover:bg-gray-700">Home</Link>
+                                <Link href="/dashboard" className={cn("block py-2 px-4 rounded hover:bg-gray-700", pathname === "/dashboard" && "bg-gray-700")}>Home</Link>
                             </li>
                             <li className="mb-2">
-                                <Link href="/members" className="block py-2 px-4 rounded hover:bg-gray-700">Membros</Link>
+                                <Link href="/members" className={cn("block py-2 px-4 rounded hover:bg-gray-700", pathname === "/members" && "bg-gray-700")}>Membros</Link>
                             </li>
                             <li className="mb-2">
-                                <Link href="/events" className="block py-2 px-4 rounded hover:bg-gray-700">Eventos</Link>
+                                <Link href="/events" className={cn("block py-2 px-4 rounded hover:bg-gray-700", pathname === "/events" && "bg-gray-700")}>Eventos</Link>
                             </li>
                         </ul>
                     </nav>
