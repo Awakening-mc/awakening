@@ -97,7 +97,7 @@ export default function CreateMemberDialog({ open, setOpen }: { open: boolean, s
                                         <FormLabel>Telefone</FormLabel>
                                         <FormControl>
                                             <Input
-                                                maxLength={15}
+                                                maxLength={17}
                                                 {...field}
                                             />
                                         </FormControl>

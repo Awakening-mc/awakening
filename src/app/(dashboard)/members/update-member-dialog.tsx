@@ -99,7 +99,7 @@ export default function UpdateMemberDialog({ member }: { member: Member }) {
                                         <FormLabel>Telefone</FormLabel>
                                         <FormControl>
                                             <Input
-                                                maxLength={15}
+                                                maxLength={17}
                                                 {...field}
                                             />
                                         </FormControl>
