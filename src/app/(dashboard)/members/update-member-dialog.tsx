@@ -101,7 +101,6 @@ export default function UpdateMemberDialog({ member }: { member: Member }) {
                                             <Input
                                                 maxLength={15}
                                                 {...field}
-                                                onChange={(e) => field.onChange(e.target.value.replace(/\s/g, ''))}
                                             />
                                         </FormControl>
                                     </FormItem>

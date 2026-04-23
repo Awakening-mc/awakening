@@ -99,7 +99,6 @@ export default function CreateMemberDialog({ open, setOpen }: { open: boolean, s
                                             <Input
                                                 maxLength={15}
                                                 {...field}
-                                                onChange={(e) => field.onChange(e.target.value.replace(/\s/g, ''))}
                                             />
                                         </FormControl>
                                     </FormItem>
