@@ -47,7 +47,7 @@ export default function Page() {
             <div className="flex justify-between pt-4">
                 <h1 className="text-2xl font-bold mb-4">Detalhes do Evento</h1>
             </div>
-            <div className="flex w-full gap-8 justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center w-full gap-8 justify-between">
                 <p className="font-bold text-lg w-1/2">{event?.name} - {event?.date.toLocaleDateString()}</p>
                 <SearchBar value={searchQuery} onSearch={setSearchQuery}/>
             </div>

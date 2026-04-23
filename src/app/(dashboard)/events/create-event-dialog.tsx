@@ -43,7 +43,7 @@ export default function CreateEventDialog({ open, setOpen }: { open: boolean, se
     })
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <Button variant={"outline"} onClick={() => setOpen(true)}>
+            <Button variant={"outline"} className={"bg-foreground text-background text-lg px-6"} onClick={() => setOpen(true)}>
                 Criar Evento
             </Button>
             <DialogContent>
@@ -54,7 +54,7 @@ export default function CreateEventDialog({ open, setOpen }: { open: boolean, se
                         <DialogTitle>Novo Evento</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-4 mb-4">
                             <FormField
                                 control={form.control}
                                 name="name"

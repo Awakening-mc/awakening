@@ -61,7 +61,7 @@ export default function CreateMemberDialog({ open, setOpen }: { open: boolean, s
                         <DialogTitle>Criar Membro</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-4 mb-4">
                             <FormField
                                 control={form.control}
                                 name="name"

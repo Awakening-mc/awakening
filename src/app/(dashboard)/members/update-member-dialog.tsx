@@ -62,7 +62,7 @@ export default function UpdateMemberDialog({ member }: { member: Member }) {
                         <DialogTitle>Criar Membro</DialogTitle>
                     </DialogHeader>
                     <Form {...form}>
-                        <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-4 mb-4">
                             <FormField
                                 control={form.control}
                                 name="name"
