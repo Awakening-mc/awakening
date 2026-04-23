@@ -27,6 +27,7 @@ export default function UpdateMemberDialog({ member }: { member: Member }) {
             id: member.id,
             name: member.name,
             class: member.class,
+            phone: member.phone || "",
             level: member.level
         }
     })
@@ -37,7 +38,6 @@ export default function UpdateMemberDialog({ member }: { member: Member }) {
         onSuccess: () => {
             toast.success("Membro alterado com sucesso!")
             queryClient.invalidateQueries({ queryKey: ['membros'] })
-            form.reset()
             setOpen(false)
         },
         onError: (erro: any) => {
@@ -74,6 +74,36 @@ export default function UpdateMemberDialog({ member }: { member: Member }) {
                             />
                             <FormField
                                 control={form.control}
+                                name="level"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Nível</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="number"
+                                                {...field}
+                                                onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="phone"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Telefone</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
                                 name="class"
                                 render={({ field }) => (
                                     <FormItem>
@@ -86,22 +116,6 @@ export default function UpdateMemberDialog({ member }: { member: Member }) {
                                                     </option>
                                                 ))}
                                             </select>
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="level"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Nível</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="number"
-                                                {...field}
-                                                onChange={(e) => field.onChange(e.target.valueAsNumber)}
-                                            />
                                         </FormControl>
                                     </FormItem>
                                 )}

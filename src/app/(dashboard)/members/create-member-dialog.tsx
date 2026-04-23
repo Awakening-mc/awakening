@@ -21,6 +21,7 @@ export default function CreateMemberDialog({ open, setOpen }: { open: boolean, s
         defaultValues: {
             name: "",
             class: classes[0],
+            phone: "",
             level: 34
         }
     })
@@ -71,6 +72,35 @@ export default function CreateMemberDialog({ open, setOpen }: { open: boolean, s
                             />
                             <FormField
                                 control={form.control}
+                                name="level"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Nível</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                type="number"
+                                                {...field}
+                                                onChange={(e) => field.onChange(e.target.valueAsNumber)} />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="phone"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Telefone</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
                                 name="class"
                                 render={({ field }) => (
                                     <FormItem>
@@ -83,21 +113,6 @@ export default function CreateMemberDialog({ open, setOpen }: { open: boolean, s
                                                     </option>
                                                 ))}
                                             </select>
-                                        </FormControl>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="level"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Nível</FormLabel>
-                                        <FormControl>
-                                            <Input
-                                                type="number"
-                                                {...field}
-                                                onChange={(e) => field.onChange(e.target.valueAsNumber)} />
                                         </FormControl>
                                     </FormItem>
                                 )}

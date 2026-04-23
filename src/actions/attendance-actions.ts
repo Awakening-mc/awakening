@@ -1,10 +1,15 @@
 'use server'
 import {db} from "@/db";
-import { event_attendance, members } from "@/db/schema";
-import { and, eq, notInArray } from "drizzle-orm";
+import { event_attendance, events, members } from "@/db/schema";
+import { and, eq, notInArray, desc } from 'drizzle-orm';
 
 export async function server_getAttendancesForEvent(eventId: string) {
     const result = await db.select().from(event_attendance).where(eq(event_attendance.eventId, eventId));
+    return result;
+}
+export async function server_getAttendancesByMember(memberId: string) {
+    const result = await db.select().from(event_attendance).innerJoin(events, eq(events.id, event_attendance.eventId)).where(eq(event_attendance.memberId, memberId)).orderBy(desc(events.date));
+
     return result;
 }
 export async function server_createAttendance(memberId: string, eventId: string) {

@@ -12,7 +12,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { server_createEvent } from "@/actions/event-actions";
 import { useState } from "react";
 
-
+const eventNames = ["Noc & Rot", "GVG Mermen", "GVG Primavera", "Gruta", "Navio", "Raide de Guilda"]
 export default function CreateEventDialog({ open, setOpen }: { open: boolean, setOpen: (open: boolean) => void }) {
     const queryClient = useQueryClient()
     const form = useForm({
@@ -62,7 +62,14 @@ export default function CreateEventDialog({ open, setOpen }: { open: boolean, se
                                     <FormItem>
                                         <FormLabel>Nome</FormLabel>
                                         <FormControl>
-                                            <Input {...field} />
+                                            <select {...field} className="border rounded px-2 py-1 w-full">
+                                                {eventNames.map((name) => (
+                                                    <option key={name} value={name}>
+                                                        {name}
+                                                    </option>
+                                                ))}
+                                            </select>
+
                                         </FormControl>
                                     </FormItem>
                                 )}

@@ -8,7 +8,10 @@ import UpdateMemberDialog from './update-member-dialog';
 import { toast } from 'sonner';
 import useDebounce from '@/hooks/useDebounce';
 import SearchBar from '@/components/search-bar';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 export default function MembersPage() {
+    const router = useRouter()
     const queryClient = useQueryClient()
     const { data: membros, isLoading } = useQuery({
         queryKey: ['membros'],
@@ -40,7 +43,7 @@ export default function MembersPage() {
         <div className="flex flex-col">
             <div className='flex justify-between w-full pt-4 gap-8'>
                 <h1>Membros</h1>
-                <SearchBar value={searchQuery} onSearch={setSearchQuery}/>
+                <SearchBar value={searchQuery} onSearch={setSearchQuery} />
                 <div className='flex gap-4 items-center'>
                     <div className='flex gap-1 items-center'>
                         <label htmlFor="hideInactives" className='mr-4'>{!hideInactives ? "Esconder inativos" : "Mostrar inativos"}</label>
@@ -75,11 +78,9 @@ export default function MembersPage() {
                                             <input className='h-6 w-6' type="checkbox" checked={membro.active} onChange={() => {
                                                 checkMember.mutate(membro.id)
                                             }} />
-                                            {membro &&
-                                                <UpdateMemberDialog member={membro} />
-                                            }
+                                            <UpdateMemberDialog member={membro} />
+                                            <Button size={"sm"} onClick={() => router.push(`/members/${membro.id}`)}>Abrir</Button>
                                         </TableCell>
-
                                     </TableRow>
                                 )
                             })}

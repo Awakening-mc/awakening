@@ -20,7 +20,8 @@ export async function server_getActiveMembers() {
     return db.select().from(members).where(eq(members.active, true)).orderBy(asc(members.name));
 }
 export async function server_getMemberById(id: string) {
-    return db.select().from(members).where(eq(members.id, id)).limit(1);
+    const [member] = await db.select().from(members).where(eq(members.id, id)).limit(1);
+    return member;
 }
 export async function server_getMembersRankedByAttendance() {
     const result = await db

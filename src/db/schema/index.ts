@@ -15,6 +15,9 @@ export const members = pgTable("members", {
     class: classEnum("class").notNull(),
     level: smallint("level").notNull(),
     active: boolean("active").default(true).notNull(),
+    phone: text("phone"),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").defaultNow().notNull(),
 })
 
 export const events = pgTable("events", {
