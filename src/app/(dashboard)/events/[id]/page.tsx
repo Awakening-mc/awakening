@@ -32,11 +32,12 @@ export default function Page() {
     })
     const [searchQuery, setSearchQuery] = useState("");
     const debouncedSearchQuery = useDebounce(searchQuery, 300);
-     const filteredMembers = members?.filter(m => m.name.toLowerCase().includes(debouncedSearchQuery.toLowerCase()));
-
+    const filteredMembers = members?.filter(m => m.name.toLowerCase().includes(debouncedSearchQuery.toLowerCase()));
+    const presentes = attendances?.filter(a => a.attended).length ?? 0;
     const updateAttendance = useMutation({
-        mutationFn: async (data: {memberId: string, present: boolean, justified: boolean}) => {
-            await server_updateAttendance(data.memberId, id as string, data.present, data.justified)
+        mutationFn: async (data: {memberId: string, present: boolean, justified: boolean, discord: boolean}) => {
+            await server_updateAttendance(
+                data.memberId, id as string, data.present, data.justified, data.discord)
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["attendances", id] })
@@ -51,12 +52,14 @@ export default function Page() {
                 <p className="font-bold text-lg w-1/2">{event?.name} - {event?.date.toLocaleDateString()}</p>
                 <SearchBar value={searchQuery} onSearch={setSearchQuery}/>
             </div>
+            <p className="text-lg text-right text-[#555] mt-4">{presentes} presentes</p>
                 {filteredMembers?.length !== 0 ?
                     <Table className="mt-4 relative">
                         <TableHeader className="sticky top-0 bg-white z-10">
                             <TableRow>
                                 <TableHead>Nome</TableHead>
                                 <TableHead>Presente</TableHead>
+                                <TableHead>Discord</TableHead>
                                 <TableHead>Justificou</TableHead>
                             </TableRow>
                         </TableHeader>
@@ -68,12 +71,17 @@ export default function Page() {
                                     <TableCell>{membro.name}</TableCell>
                                     <TableCell>
                                         <input className="ml-4 h-6 w-6" type="checkbox" checked={at?.attended ?? false} onChange={(e) => {
-                                            updateAttendance.mutate({ memberId: membro.id, present: e.target.checked ?? false, justified: at?.justified ?? false });
+                                            updateAttendance.mutate({ memberId: membro.id, present: e.target.checked ?? false, justified: at?.justified ?? false, discord: at?.discord ?? false });
+                                        }} />
+                                    </TableCell>
+                                    <TableCell>
+                                        <input className="ml-4 h-6 w-6" type="checkbox" checked={at?.discord ?? false} onChange={(e) => {
+                                            updateAttendance.mutate({ memberId: membro.id, present: at?.attended ?? false, justified: at?.justified ?? false, discord: e.target.checked ?? false });
                                         }} />
                                     </TableCell>
                                     <TableCell>
                                         <input className="ml-4 h-6 w-6" type="checkbox" checked={at?.justified ?? false} onChange={(e) => {
-                                            updateAttendance.mutate({ memberId: membro.id, present: at?.attended ?? false, justified: e.target.checked ?? false });
+                                            updateAttendance.mutate({ memberId: membro.id, present: at?.attended ?? false, justified: e.target.checked, discord: at?.discord  ?? false });
                                         }} />
                                     </TableCell>
 

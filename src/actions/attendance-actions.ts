@@ -48,14 +48,15 @@ export async function server_createAttendanceForNotAttendedById(eventId: string,
     })
 }
 
-export async function server_updateAttendance(memberId: string, eventId: string, attended?: boolean, justified?: boolean) {
+export async function server_updateAttendance(memberId: string, eventId: string, attended?: boolean, justified?: boolean, discord?: boolean) {
     const existingAttendance = await db.select().from(event_attendance).where(and(eq(event_attendance.eventId, eventId), eq(event_attendance.memberId, memberId))).limit(1);
     if (!existingAttendance[0]) {
         await server_createAttendanceForNotAttendedById(eventId, memberId);
     }
     const [attendance] = await db.update(event_attendance).set({
         attended,
-        justified
+        justified,
+        discord
     }).where(and(eq(event_attendance.memberId, memberId), eq(event_attendance.eventId, eventId))).returning();
     return attendance;
 }

@@ -89,7 +89,6 @@ export default function MembersPage() {
                                 <TableRow key={membro.id}>
                                     <TableCell>{membro.name}</TableCell>
                                     <TableCell>{membro.class}</TableCell>
-                                    <TableCell>{membro.level}</TableCell>
                                     <TableCell className="flex gap-2 items-center">
                                         <input
                                             className="h-6 w-6"

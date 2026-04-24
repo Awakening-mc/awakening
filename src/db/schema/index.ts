@@ -32,6 +32,7 @@ export const event_attendance = pgTable("event_attendance", {
     memberId: uuid("member_id").references(() => members.id, {onDelete: "cascade"}).notNull(),
     attended: boolean("attended").notNull(),
     justified: boolean("justified"),
+    discord: boolean("discord"),
 })
 
 export type User = typeof users.$inferSelect;
